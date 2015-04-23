@@ -1,18 +1,80 @@
 <html>
-	<head>
-		<script src="js/mail-generator.js"></script>
-		<link href="css/style.css" rel="stylesheet" media="screen">
+<head>
+    <script src="js/mail-generator.js"></script>
+    <link href="css/style.css" rel="stylesheet" media="screen">
     <script>
-      window.onload = function(){
-        // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE. 
-        // We have to use window.onload so your JavaScript doesn't execute until the page has loaded and all HTML has been downloaded to your browser
-        
-      };
+        window.onload = function () {
+            // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE/
+            loadGeeMails();
+            var index = 0;
+            var display = new Array;
+            var switchBG = true;;
+            var tag;
+            var initial;
+            var date;
+            var subject;
+            var sender;
+            var body;
+            var gen = function () {
+                display[index] = generateMessage();
+                tag = document.createElement('div');
+                if (switchBG) {
+                    document.getElementById('inbox').setAttribute('class', 'true');
+                    switchBG = false;
+                } else {
+                    document.getElementById('inbox').setAttribute('class', 'false');
+                    switchBG = true;
+                }
+                initial = document.createElement('tr');
+                date = document.createElement('td');
+                date.style.paddingRight = '33px';
+                date.setAttribute('class', 'email');
+                date.innerHTML = display[index].date.toString().substring(4, 15);
+                sender = document.createElement('td');
+                sender.style.paddingRight = '33px';
+                sender.setAttribute('class', 'email');
+                sender.innerHTML = display[index].sender;
+                subject = document.createElement('td');
+                subject.style.paddingRight = '33px';
+                subject.setAttribute('class', 'email');
+                subject.innerHTML = display[index].subject;
+                tag.appendChild(initial);
+                tag.appendChild(date);
+                tag.appendChild(sender);
+                tag.appendChild(subject);
+                body = document.createElement('p');
+                body.setAttribute('id', 'message');
+                body.innerHTML = display[index].body;
+                document.getElementById('inbox').innerHTML += tag.innerHTML;
+                index++;
+            }
+            for (var i = 0; i <=9; i++){
+                gen();
+            }
+            setInterval(gen, 15000);
+            document.getElementById('inbox').addEventListener('click', function(){
+                document.getElementById('displayBody').innerHTML = body.innerHTML;
+            })
+        }
     </script>
-	</head>
-	<body>
-		<div class="container" id="main">
-			Build Me!
-		</div>
-	</body>
+</head>
+<body>
+<h1>GeeMail</h1>
+
+<div id="messageCount"></div>
+<table id="headers">
+    <th>Date:</th>
+    <th>Sender:</th>
+    <th>Subject:</th>
+</table>
+
+<div id='tables'>
+    <table class="container" id="inbox"></table>
+</div>
+
+
+<div id="displayBody"></div>
+
+
+</body>
 </html>
