@@ -1,0 +1,26 @@
+#headers th{
+
+    padding-right:95px;
+    
+}
+
+#inbox{
+    color:blue;
+
+}
+
+#tables{
+    overflow: auto;
+    height: 250px;
+    width:auto;
+}
+
+.true{
+
+    background-color: lightblue;
+
+}
+
+.false{
+
+    background:mintcream;
