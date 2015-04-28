@@ -3,78 +3,97 @@
     <script src="js/mail-generator.js"></script>
     <link href="css/style.css" rel="stylesheet" media="screen">
     <script>
+
+
         window.onload = function () {
-            // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE/
-            loadGeeMails();
+
+            var msgCount = 0;  // Counts unread messages only.  Need to fix.
             var index = 0;
-            var display = new Array;
-            var switchBG = true;;
-            var tag;
-            var initial;
-            var date;
-            var subject;
-            var sender;
-            var body;
+            var msg = new Array;
+            var boolean = true;
+            var bg;
+
             var gen = function () {
-                display[index] = generateMessage();
-                tag = document.createElement('div');
-                if (switchBG) {
-                    document.getElementById('inbox').setAttribute('class', 'true');
-                    switchBG = false;
+
+
+
+                if (boolean) {//Alternate background color
+                    bg = 'true';
+                    boolean = false;
                 } else {
-                    document.getElementById('inbox').setAttribute('class', 'false');
-                    switchBG = true;
+                    bg = 'false';
+                    boolean = true;
                 }
-                initial = document.createElement('tr');
-                date = document.createElement('td');
-                date.style.paddingRight = '33px';
+
+                msg[index] = generateMessage();
+                var temp = document.createElement('tr'); //Contains information on new email.
+                var date, sender, subject;
+
+                date = document.createElement('span');
                 date.setAttribute('class', 'email');
-                date.innerHTML = display[index].date.toString().substring(4, 15);
-                sender = document.createElement('td');
-                sender.style.paddingRight = '33px';
+                date.innerHTML = msg[index].date.toString().substring(4, 15);
+
+
+                sender = document.createElement('span');
                 sender.setAttribute('class', 'email');
-                sender.innerHTML = display[index].sender;
-                subject = document.createElement('td');
-                subject.style.paddingRight = '33px';
+                sender.innerHTML = msg[index].sender;
+
+                subject = document.createElement('span');
                 subject.setAttribute('class', 'email');
-                subject.innerHTML = display[index].subject;
-                tag.appendChild(initial);
-                tag.appendChild(date);
-                tag.appendChild(sender);
-                tag.appendChild(subject);
-                body = document.createElement('p');
-                body.setAttribute('id', 'message');
-                body.innerHTML = display[index].body;
-                document.getElementById('inbox').innerHTML += tag.innerHTML;
+                subject.innerHTML = msg[index].subject;
+
+                temp.appendChild(date);
+                temp.appendChild(sender);
+                temp.appendChild(subject);
+
+                temp.setAttribute('id', index.toString());
+                temp.setAttribute('class', bg);
+                temp.style.fontWeight = 'bold';
+
+
+
+                temp.onclick = function () {
+                    document.getElementById('message').innerHTML = msg[temp.id].body;
+                    temp.style.fontWeight = 'normal';
+
+
+                }
+
+                document.getElementById('inbox').appendChild(temp);
                 index++;
+                document.getElementById('mCount').innerHTML = 'Inbox(' + msgCount.toString() + ')';
+                msgCount++;
+
+
             }
-            for (var i = 0; i <=9; i++){
+
+            //If no messages, display notification.
+
+
+            for (var i = 0; i <= 9; i++) {
                 gen();
             }
-            setInterval(gen, 15000);
-            document.getElementById('inbox').addEventListener('click', function(){
-                document.getElementById('displayBody').innerHTML = body.innerHTML;
-            })
+
+            setInterval(gen,15000);
         }
     </script>
 </head>
 <body>
 <h1>GeeMail</h1>
 
-<div id="messageCount"></div>
-<table id="headers">
-    <th>Date:</th>
-    <th>Sender:</th>
-    <th>Subject:</th>
-</table>
+<div class="container" id="main">
+    <div class="nav" id="navbar">
+        <li id =mCount></li>
+        <li>Starred</li>
+        <li>Important</li>
+        <li>Sent Mail</li>
+        <li>Drafts</li>
+    </div>
+        <table id="inbox">
 
-<div id='tables'>
-    <table class="container" id="inbox"></table>
+    </table>
 </div>
-
-
-<div id="displayBody"></div>
-
-
+<div id='message'>
+</div>
 </body>
 </html>
